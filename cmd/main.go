@@ -15,13 +15,15 @@ func gateway(c *gin.Context) {
 	relay := c.Query("relay")
 
 	os.Chdir("../fluence")
-	cmd := exec.Command("../js/node_modules/.bin/fluence", "run", "-f", `helloWorld("wonder")`, "--relay="+relay)
+	cmd := exec.Command("../cli/node_modules/.bin/fluence", "run", "-f", `helloWorld("wonder")`, "--relay="+relay)
 
 	output, _ := cmd.Output()
 	response := map[string]interface{}{
 		"msg": string(output),
 	}
+	
 	c.JSON(http.StatusOK, response)
+	
 }
 
 func main() {
@@ -38,5 +40,6 @@ func main() {
 
 	router.GET("/api", gateway)
 
-	log.Fatal(router.Run(":8000")) // Defa
+	log.Fatal(router.Run(":8000"))
+	
 }
